@@ -20,9 +20,18 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('incredible_piwik');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->booleanNode('enabled')->defaultValue('%kernel.debug%')->end()
+                ->integerNode('site_id')->end()
+                ->scalarNode('tracker_url')->end()
+                ->arrayNode()
+                    ->children()
+                        ->booleanNode('enabled')->defaultFalse()->end()
+                        ->integerNode('timer')->defaultValue(30)->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder;
     }
