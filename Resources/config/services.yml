@@ -1,0 +1,17 @@
+services:
+    incredible_piwik.piwik.piwik:
+        class: Incredible\PiwikBundle\Piwik\Piwik
+        arguments: [ @twig ]
+
+    incredible_piwik.listener.piwik_listener:
+        class: Incredible\PiwikBundle\Listener\PiwikListener
+            arguments: [ @incredible_piwik.piwik.piwik ]
+            tags:
+                - [ name: kernel.event_listener, event: incredible_piwik.track_event, method: onTrackEvent ]
+                - [ name: kernel.event_listener, event: incredible_piwik.add_custom_variable, method: onAddCustomVariable ]
+
+   incredible_piwik.extension.piwik_extension:
+        class: Incredible\PiwikBundle\Extension\PiwikExtension
+        arguments: [ @incredible_piwik.piwik.piwik ]
+        tags:
+            - { name: twig.extension }
